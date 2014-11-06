@@ -7,6 +7,10 @@ function die()
 }
 
 SERVERID=$1
+if [ "$SERVERID" == "" ] ; then
+	die "run with master or replica"
+fi
+
 P4D_DIR="/var/perforce/p4d"
 
 # clean the data dir, start fresh

@@ -8,8 +8,8 @@ function die()
 P4PORT=localhost:1666
 P4USER=super
 
-# Step 1(a) make Replica1 a RO replica of Master on the vagrant host port of 6661
-p4 configure set Replica1#P4TARGET=master:6661 || die "failed to Step 1(a)"
+# Step 1(a) make Replica1 a RO replica of Master on the vagrant host port of 1666
+p4 configure set Replica1#P4TARGET=master:1666 || die "failed to Step 1(a)"
 
 # Step 1(b) Set the Replica1 server to save the replica server's log file using a specified file name. Keeping the log names unique prevents problems when collecting data for debugging or performance tracking purposes.
 p4 configure set Replica1#P4LOG=replica1Log.txt || die "failed to Step 1(b)"
@@ -50,7 +50,7 @@ p4 configure set Replica1#lbr.replication=readonly || die "failed to Step 5"
 # Save the user specification and exit your default editor.
 # By default, the service user is granted the same 12-hour login timeout as standard users. To prevent the service user's ticket from timing out, create a group with a long timeout on the master server. In this example, the Timeout: field is set to two billion seconds, approximately 63 years:
 
-cat << EOF | p4 group -i service_group
+cat << EOF | p4 group -i
 Group:	service_group
 
 MaxResults:	unset
