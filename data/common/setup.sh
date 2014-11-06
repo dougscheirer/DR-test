@@ -28,7 +28,6 @@ export P4PORT="localhost:1666"
 export P4USER=super
 
 p4 info || die "failed to get p4 info"
-p4 serverid $SERVERID 
 
 # set up users, etc.
 p4 user -o | p4 user -i

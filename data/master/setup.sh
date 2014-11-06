@@ -8,6 +8,9 @@ function die()
 P4PORT=localhost:1666
 P4USER=super
 
+# Step 0 set the server id
+p4 serverid "Master" || die "failed to Step 0"
+
 # Step 1(a) make Replica1 a RO replica of Master on the vagrant host port of 1666
 p4 configure set Replica1#P4TARGET=master:1666 || die "failed to Step 1(a)"
 
