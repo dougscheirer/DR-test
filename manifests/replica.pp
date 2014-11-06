@@ -9,6 +9,6 @@ exec { "apt-update":
 Exec["apt-update"] -> Package <| |>
 
 exec { "Setup" :
-	command => "/vagrant_data/setup.sh Replica1",
+	command => "/vagrant_data/setup.sh replica",
 }
 

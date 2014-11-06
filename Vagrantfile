@@ -132,18 +132,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.manifests_path = "manifests"
       puppet.manifest_file  = "master.pp"
     end
-    master.vm.synced_folder "./data/master", "/vagrant_data"
+    master.vm.synced_folder "./data/common", "/vagrant_data"
+    master.vm.synced_folder "./data/master", "/vagrant_master"
     master.vm.network "forwarded_port", guest: 1666, host: 6661
   end
 
-   config.vm.define :portal do |replica|
+   config.vm.define :replica do |replica|
     replica.vm.hostname="replica"
     replica.vm.network :private_network, ip: "192.168.33.11"
     replica.vm.provision :puppet do |puppet|
       puppet.manifests_path = "manifests"
       puppet.manifest_file  = "replica.pp"
     end
-    replica.vm.synced_folder "./data/replica", "/vagrant_data"
+    replica.vm.synced_folder "./data/common", "/vagrant_data"
+    replica.vm.synced_folder "./data/replica", "/vagrant_replica"
     replica.vm.network "forwarded_port", guest: 1666, host: 6662
   end
 
