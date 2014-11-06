@@ -5,18 +5,21 @@ function die()
         echo $1 && exit 1
 }
 
-export P4PORT=localhost:1666
+export P4PORT=master:1666
 export P4USER=super
 
-# Step 0 Set the server id
-p4 serverid replica1 || die "failed to Step 0"
+PATH=$PATH:/opt/perforce/bin:/opt/perforce/sbin
+
+# Step 3 Set the server id
+# p4 serverid replica1 || die "failed to Step 0"
 
 # Step 1 Boot-strap the replica server by checkpointing the master server, and restoring that checkpoint to the replica:
 p4 admin checkpoint || die "failed to Step 1"
 # (For a new setup, we can assume the checkpoint file is named checkpoint.1)
 
 # Step 2 Move the checkpoint to the replica server's P4ROOT directory and replay the checkpoint:
-p4d -r /p4/replica -jr $P4ROOT/checkpoint.1 || die "failed to Step 2"
+scp master:/var/perforce/p4d/checkpoint.* /tmp || die "failed to Step 2 (scp checkpoint from master)"
+p4d -r /var/perforce/p4d -jr /tmp/checkpoint.1 || die "failed to Step 2"
 
 # Step 3 Copy the versioned files from the master server to the replica.
 # Versioned files include both text (in RCS format, ending with ",v") and binary files (directories of individual binary files, each directory ending with ",d"). Ensure that you copy the text files in a manner that correctly translates line endings for the replica host's filesystem.
@@ -29,3 +32,6 @@ p4d -r /p4/replica -jr $P4ROOT/checkpoint.1 || die "failed to Step 2"
 
 # Then move the ticket to the location that holds the P4TICKETS file for the replica server's service user.
 
+# Start the replica server
+/opt/perforce/sbin/ p4d -r /var/perforce/p4d -In Replica1 -p replica:1666 -d
+~

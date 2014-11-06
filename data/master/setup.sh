@@ -8,6 +8,26 @@ function die()
 P4PORT=localhost:1666
 P4USER=super
 
+# run the master server
+/vagrant_data/run-p4d.sh $P4D_DIR
+
+export PATH=$PATH:/opt/perforce/bin/
+export P4PORT="localhost:1666"
+export P4USER=super
+
+p4 info || die "failed to get p4 info"
+
+# set up default users, etc.
+p4 user -o | p4 user -i
+p4 protect -o | p4 protect -i
+( p4 user -o service ; echo -e "\nType: service\n" ) | p4 user -i -f
+
+#################################
+#
+# Begin replica setup on master
+#
+#################################
+
 # Step 0 set the server id
 p4 serverid "Master" || die "failed to Step 0"
 
