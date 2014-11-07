@@ -5,10 +5,19 @@ function die()
         echo $1 && exit 1
 }
 
+P4D_DIR=$1
+if [ "$P4D_DIR" == "" ] ; then
+        die "run with a p4d directory"
+fi
+
 export P4PORT=master:1666
 export P4USER=super
 
 PATH=$PATH:/opt/perforce/bin:/opt/perforce/sbin
+
+# copy ssh keys to make scp from master possible
+mkdir -p ~/.ssh && cp -r /vagrant_data/id_rsa* ~/.ssh && chmod go-rwx ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
+        && ssh-keyscan -t rsa master > ~/.ssh/known_hosts || die "failed to configure ssh keys"
 
 # Step 3 Set the server id
 # p4 serverid replica1 || die "failed to Step 0"
@@ -33,5 +42,5 @@ p4d -r /var/perforce/p4d -jr /tmp/checkpoint.1 || die "failed to Step 2"
 # Then move the ticket to the location that holds the P4TICKETS file for the replica server's service user.
 
 # Start the replica server
-/opt/perforce/sbin/ p4d -r /var/perforce/p4d -In Replica1 -p replica:1666 -d
-~
+p4d -r /var/perforce/p4d -In Replica1 -p replica:1666 -d
+

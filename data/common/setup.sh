@@ -25,8 +25,8 @@ echo -e "address=/master/192.168.33.10\naddress=/replica1/192.168.33.11" >> /etc
 
 # master or replica?
 if [ "$1" == "master" ] ; then
-   /vagrant_master/setup.sh
-else
-   /vagrant_replica/setup.sh
+   /vagrant_master/setup.sh $P4D_DIR
+else 
+   /vagrant_replica/setup.sh $P4D_DIR
 fi
 

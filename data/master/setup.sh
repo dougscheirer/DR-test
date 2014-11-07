@@ -5,8 +5,16 @@ function die()
         echo $1 && exit 1
 }
 
+P4D_DIR=$1
+if [ "$P4D_DIR" == "" ] ; then
+	die "run with a p4d directory"
+fi
+
 P4PORT=localhost:1666
 P4USER=super
+
+# copy ssh keys to enable scp from master to replica
+mkdir -p ~/.ssh && cp -r /vagrant_data/id_rsa* ~/.ssh && chmod go-rwx ~/.ssh/* && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys || die "failed to configure ssh keys"
 
 # run the master server
 /vagrant_data/run-p4d.sh $P4D_DIR
