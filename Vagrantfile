@@ -134,6 +134,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     master.vm.synced_folder "./data/common", "/vagrant_data"
     master.vm.synced_folder "./data/master", "/vagrant_master"
+    master.vm.synced_folder "./data/replica", "/vagrant_replica"
     master.vm.network "forwarded_port", guest: 1666, host: 6661
   end
 
@@ -146,6 +147,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     replica.vm.synced_folder "./data/common", "/vagrant_data"
     replica.vm.synced_folder "./data/replica", "/vagrant_replica"
+    replica.vm.synced_folder "./data/master", "/vagrant_master"
     replica.vm.network "forwarded_port", guest: 1666, host: 6662
   end
 
