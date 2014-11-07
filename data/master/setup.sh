@@ -107,6 +107,8 @@ fi
 # For more details, seeTickets and timeouts for service users.
 # Step 7 Set the service user protections to super in your protections table. (See Permissions for service users.) It is good practice to set the security level of all your Perforce Servers to at least 1 (preferably to 3, so as to require a strong password for the service user, and ideally to 4, to ensure that only authenticated service users may attempt to perform replica or remote depot transactions.)
 
+(p4 protect -o; echo -e "   super group service_group * //...\n") | p4 protect -i
+
 # p4 configure set security=4 || die "failed to Step 7" 
 # p4 passwd || die "failed to Step 7" 
 

@@ -42,5 +42,5 @@ p4d -r /var/perforce/p4d -jr /tmp/checkpoint.1 || die "failed to Step 2"
 # Then move the ticket to the location that holds the P4TICKETS file for the replica server's service user.
 
 # Start the replica server
-p4d -r /var/perforce/p4d -In Replica1 -p replica:1666 -d
+p4d -r /var/perforce/p4d -In Replica1 -p 1666 -Lp4d.log -d
 

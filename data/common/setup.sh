@@ -6,6 +6,10 @@ function die()
         echo $1 && exit 1
 }
 
+# symlink the p4 and p4d dirs
+ln -s /opt/perforce/sbin/p4d /usr/local/bin/p4d
+ln -s /opt/perforce/bin/p4 /usr/local/bin/p4
+
 SERVERID=$1
 if [ "$SERVERID" == "" ] ; then
 	die "run with master or replica"
